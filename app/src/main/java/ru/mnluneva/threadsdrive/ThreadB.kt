@@ -1,21 +1,20 @@
 package ru.mnluneva.threadsdrive
 
-import java.io.FileOutputStream
+import java.io.FileWriter
 
 class ThreadB: Thread() {
     override fun run() {
+        name = "Поток Б"
         for(i in 1..100){
-            FileOutputStream(textFile, true).bufferedWriter().use {
-                it.write("Поток Б $i \n")
-                if (i == 100 && !isWin){
-                    isWin = true
-                    it.write("Поток Б выиграл \n")
-                } else if (i == 100 && isWin) {
-                    it.write("Поток Б проиграл \n")
-                    isWin = false
+            FileWriter(textFile, true).use {
+                it.write("$name $i \n")
+                val resultValue = isWin.compareAndSet(i, expect = false, update = true)
+                if(!resultValue.isNullOrEmpty()){
+                    it.write("$name $resultValue \n")
                 }
                 it.close()
             }
         }
     }
 }
+

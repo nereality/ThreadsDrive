@@ -1,6 +1,6 @@
 package ru.mnluneva.threadsdrive
 
-import android.os.Environment
+import android.content.Context
 import android.util.Log
 import java.io.File
 
@@ -8,8 +8,8 @@ class FilesHelper {
 
     companion object {
 
-        fun initFile() : File {
-            val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        fun initFile(context: Context) : File {
+            val directory = File(context.applicationInfo.dataDir)
             val fileName =  "data_${System.currentTimeMillis()}.txt"
             var file = File(directory, fileName)
             if (file.exists()) {

@@ -6,7 +6,7 @@ import android.widget.Button
 import java.io.File
 
 @Volatile lateinit var textFile: File
-@Volatile var isWin: Boolean = false
+var isWin: DriveAtomicBoolean = DriveAtomicBoolean(false)
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,16 +20,8 @@ class MainActivity : AppCompatActivity() {
         startButton = findViewById(R.id.startButton)
 
         startButton.setOnClickListener {
-            textFile = FilesHelper.initFile()
+            textFile = FilesHelper.initFile(this@MainActivity)
             startDrive()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (!PermissionManager.checkPermission(this@MainActivity)) {
-            PermissionManager.checkRunTimePermission(this@MainActivity)
         }
     }
 
